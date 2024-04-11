@@ -1,12 +1,10 @@
-// Request 객체의 쿠키로 주어진 jwt를 검증하고, User DAO를 Request 객체에 추가하는 미들웨어
-
-
-import jwt, { JwtPayload } from 'jsonwebtoken';
+// Request 객체의 쿠키로 주어진 jwt 를 검증하고, User DAO 를 Request 객체에 추가하는 미들웨어
+import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from "express";
-import dotenv from "dotenv";
-
-
-dotenv.config();
+// import dotenv from "dotenv";
+//
+//
+// dotenv.config();
 // Request 타입을 확장하여 user 프로퍼티를 추가
 declare global {
   namespace Express {
@@ -15,7 +13,6 @@ declare global {
     }
   }
 }
-
 
 export async function authenticateUser(req: Request, res: Response, next: NextFunction) {
   const accessToken = req.cookies['access-token'];
@@ -31,7 +28,7 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
   try {
     jwt.verify(accessToken, secret);
     const payload = jwt.decode(accessToken) as { email: string };
-    if (payload && typeof payload.email === 'string') {
+    if (payload) {
       req.user = { email: payload.email };
       next();
     } else {
