@@ -3,6 +3,7 @@
 
 import mysql from "mysql2/promise";
 import pool from "../utils/mysql";
+import bcrypt from "bcryptjs";
 
 export class User {
   constructor(
@@ -24,14 +25,18 @@ export class User {
     return new User(id, email, encryptedPassword);
   }
 
-
   static async create(params: { email: string; password: string }) {
     const { email, password } = params;
+    const hashedPassword = await bcrypt.hash(password, 10); // 10 is the number of salt rounds
     const [result] = await pool.execute(
         `INSERT INTO users (email, password) VALUES (?, ?)`,
-        [email, password]
+        [email, hashedPassword]
     );
 
     return result;
+  }
+
+  async comparePassword(plainPassword: string): Promise<boolean> {
+    return bcrypt.compare(plainPassword, this.encryptedPassword);
   }
 }
