@@ -3,6 +3,6 @@
   "watch": ["src"],
   "ignore": ["src/**/*.test.ts"],
   "ext": "ts,json",
-  "exec": "tsc && node .",
+  "exec": "tsc && node -r dotenv/config .",
   "legacyWatch": true
 }
