@@ -54,9 +54,7 @@ router.get('/users/me', authenticateUser, async (req: Request, res: Response) =>
     return res.status(400).json({ error: 'Email is required' });
   }
 
-  // console.log('Before User.findOne:', MOCK_USERS); // 로깅 추가
   const user = await User.findOne({ email: req.user.email });
-  // console.log('After User.findOne:', MOCK_USERS); // 로깅 추가
 
   if (!user) {
     return res.status(404).json({ error: 'User not found' });
