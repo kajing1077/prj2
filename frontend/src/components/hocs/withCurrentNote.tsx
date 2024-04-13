@@ -1,9 +1,0 @@
-//fetchCurrentUser
-//requestLogin
-//requestLogout
-//requestJoin
-//fetchNotes
-//fetchNote
-//createNote
-//updateNote
-//deleteNote
