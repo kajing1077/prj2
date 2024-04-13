@@ -3,9 +3,9 @@ import {authenticateUser} from "../middlewares/authentication";
 import express, {Request as ExpressRequest, Response} from "express";
 import {User} from "../models/user";
 
-
 interface Request extends ExpressRequest {
   user?: {
+    id: number;
     email: string;
   };
 }
@@ -25,6 +25,7 @@ function isQueryError(error: unknown): error is QueryError {
   return (error as QueryError).code !== undefined;
 }
 
+// 로그인
 router.post("/login", async (req: Request, res: Response) => {
   const email = req.body.email; // Extract email from request body
   const accessToken = jwt.sign({email}, JWT_SECRET, {expiresIn: "14d"});
@@ -32,7 +33,14 @@ router.post("/login", async (req: Request, res: Response) => {
   res.sendStatus(204);
 });
 
+// 로그아웃
+router.post("/logout", async (req: Request, res: Response) => {
+  res.clearCookie("access-token");
+  res.sendStatus(204);
+});
 
+
+// 회원가입
 router.post("/users", async (req: Request, res: Response) => {
   const {email, password} = req.body;
 
@@ -47,6 +55,8 @@ router.post("/users", async (req: Request, res: Response) => {
   res.sendStatus(201);
 });
 
+
+// 사용자 자신의 정보 조회
 router.get('/users/me', authenticateUser, async (req: Request, res: Response) => {
   if (!req.user?.email) {
     return res.status(400).json({error: 'Email is required'});
