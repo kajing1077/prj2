@@ -4,6 +4,7 @@ import { CORS_ALLOWED_ORIGIN } from "./settings";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRouter from './routes/users';
+import noteRouter from './routes/notes';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -17,11 +18,11 @@ app.use(
     })
 );
 
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended: true}));
 app.use('/', userRouter);
+app.use('/notes', noteRouter);
 
 
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
