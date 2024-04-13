@@ -4,7 +4,6 @@ import request from 'supertest'
 import { app } from '../app'
 import { User, MOCK_USERS } from '../models/__mocks__/user'
 
-
 jest.mock('../models/user', () => jest.requireActual("../models/__mocks__/user.ts"))
 
 afterEach(() => {
@@ -21,7 +20,8 @@ describe('GET /users/me', () => {
 
         console.log(response.body);
 
-        expect(response.status).toBe(200)
+        expect(response.status).toBe(200);
         expect(response.body).toEqual({ email: "apple@example.com" });
     })
 });
+
